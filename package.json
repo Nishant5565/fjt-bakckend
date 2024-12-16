@@ -7,7 +7,7 @@
     "start": "ts-node-dev --respawn src/server.ts",
     "server": "nodemon --exec ts-node-dev src/server.ts",
     "seed": "ts-node prisma/seed.ts", 
-    "build ": "tsc"
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
