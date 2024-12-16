@@ -2,23 +2,26 @@ services:
   db:
     image: postgres
     container_name: postgres_db
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: yourdatabase
+      POSTGRES_HOST : ep-shiny-surf-a5tp3fio.us-east-2.aws.neon.tech
+      POSTGRES_USER: featuredJobs_owner
+      POSTGRES_PASSWORD: yRZMV5YpKx7i
+      POSTGRES_DB: featuredJobs
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
   backend:
-    build: ./
+    build: .
     container_name: backend
     command: npm start
     ports:
-      - "8080:8080"
+      - "3000:3000"
     volumes:
-      - ./src:/app
+      - .:/app
       - /app/node_modules
     depends_on:
       - db
