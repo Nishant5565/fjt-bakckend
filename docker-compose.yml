@@ -8,11 +8,3 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    environment:
-      POSTGRES_HOST: ep-shiny-surf-a5tp3fio.us-east-2.aws.neon.tech
-      POSTGRES_USER: featuredJobs_owner
-      POSTGRES_PASSWORD: yRZMV5YpKx7i
-      POSTGRES_DB: featuredJobs
-
-volumes:
-  postgres_data:

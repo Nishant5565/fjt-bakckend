@@ -6,24 +6,37 @@ on:
       - main
 
 jobs:
-    build-and-deploy:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
-        - name: Set up Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: '20'
-        - name: Install dependencies
-          run: npm install
-        - name: Build
-          run: npm run build
-        - name: Deploy to Azure Web App
-          uses: azure/webapps-deploy@v2
-          with:
-            app-name: 'personal-bht'
-            slot-name: 'production'
-            publish-profile: ${{ secrets.AZURE_WORKFLOW }}
-            package: .
-            
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build Docker image
+        run: |
+          docker build -t personal-bht .
+
+      - name: Push Docker image to Azure Container Registry (if using it)
+        run: |
+          docker tag personal-bht ${{ secrets.AZURE_REGISTRY }}/personal-bht:v1
+          docker push ${{ secrets.AZURE_REGISTRY }}/personal-bht:v1
+
+      - name: Deploy to Azure Web App
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'personal-bht'
+          slot-name: 'production'
+          publish-profile: ${{ secrets.AZURE_WORKFLOW }}
+          images: '${{ secrets.AZURE_REGISTRY }}/personal-bht:v1'
