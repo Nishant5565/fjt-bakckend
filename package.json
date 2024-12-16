@@ -8,7 +8,7 @@
     "server": "nodemon --exec ts-node-dev src/server.ts",
     "seed": "ts-node prisma/seed.ts", 
     "build": "tsc",
-    "postinstall": "npm install --only=production=false"
+    "postinstall": "npm install --only=dev"
   },
   "keywords": [],
   "author": "",
